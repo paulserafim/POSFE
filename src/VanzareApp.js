@@ -1508,8 +1508,9 @@ export class VanzareApp extends LitElement {
     var totalTVA = 0;
     read("intrareBonFiscalList").forEach((line) => {
       totalTVA +=
-        line.produs.pret *
-        (this._grupaTVAToValoare(line.produs.idGrupaTVA) / 100) *
+        (line.produs.pret -
+          line.produs.pret /
+            (1 + this._grupaTVAToValoare(line.produs.idGrupaTVA) / 100)) *
         line.cantitate;
     });
 
@@ -2119,6 +2120,8 @@ export class VanzareApp extends LitElement {
           var modal = this.shadowRoot.getElementById("modalNumberKeypad");
           modal.style.display = "none";
           this._actionRelatedToInputField(this.activeElement.name);
+          this.activeElement.value = "";
+          this.activeElement = {};
         } else {
           alert("Valoarea nu este numerica!");
         }
@@ -2158,7 +2161,8 @@ export class VanzareApp extends LitElement {
         var modal = this.shadowRoot.getElementById("modalAlphanumericKeypad");
         modal.style.display = "none";
         this._actionRelatedToInputField(this.activeElement.name);
-
+        this.activeElement.value = "";
+        this.activeElement = {};
         break;
       case "Space":
         this.activeElement.value = defaultValueOfActiveElement + " ";

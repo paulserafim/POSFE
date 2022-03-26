@@ -1480,7 +1480,10 @@ export class BonFiscalApp extends LitElement {
     var totalTVA = 0;
     read("intrareBonFiscalBonDeschis").forEach((line) => {
       totalTVA +=
-        ((line.produs.pret * line.produs.valoareTVA) / 100) * line.cantitate;
+        (line.produs.pret -
+          line.produs.pret /
+            (1 + this._grupaTVAToValoare(line.produs.idGrupaTVA) / 100)) *
+        line.cantitate;
     });
 
     return parseFloat(totalTVA).toPrecision(3);
@@ -2088,6 +2091,8 @@ export class BonFiscalApp extends LitElement {
           var modal = this.shadowRoot.getElementById("modalNumberKeypad");
           modal.style.display = "none";
           this._actionRelatedToInputField(this.activeElement.name);
+          this.activeElement.value = "";
+          this.activeElement = {};
         } else {
           alert("Valoarea nu este numerica!");
         }
@@ -2127,7 +2132,8 @@ export class BonFiscalApp extends LitElement {
         var modal = this.shadowRoot.getElementById("modalAlphanumericKeypad");
         modal.style.display = "none";
         this._actionRelatedToInputField(this.activeElement.name);
-
+        this.activeElement.value = "";
+        this.activeElement = {};
         break;
       case "Space":
         this.activeElement.value = defaultValueOfActiveElement + " ";

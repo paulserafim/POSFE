@@ -273,9 +273,13 @@ export class BonuriFiscaleApp extends LitElement {
                     <td>${dataRow.id}</td>
                     <td>${dataRow.date}</td>
                     <td>${dataRow.cui != "" ? dataRow.cui : "-"}</td>
-                    <td>${this._getValoareBonFiscal(dataRow)}</td>
-                    <td>${this._getDiscountIncreaseBonFiscal(dataRow)}</td>
-                    <td>${this._getTVABonFiscal(dataRow)}</td>
+                    <td>${parseFloat(dataRow.totalDupaDiscount).toPrecision(
+                      3
+                    )}</td>
+                    <td>${parseFloat(
+                      dataRow.total - dataRow.totalDupaDiscount
+                    ).toPrecision(3)}</td>
+                    <td>${parseFloat(dataRow.totalTVA).toPrecision(3)}</td>
                     <td>${dataRow.status}</td>
                     <td><button id=${dataRow.id} class="searchButton" @click=${
                     this._onViewClick

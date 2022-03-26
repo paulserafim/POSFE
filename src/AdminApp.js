@@ -47,6 +47,11 @@ export class AdminApp extends LitElement {
         width: 15rem;
       }
 
+      .resetareTasteRapide {
+        background-color: #d9534f;
+        width: 10rem;
+      }
+
       .consultareNomenclator {
         background-color: #5bc0de;
         width: 15rem;
@@ -309,6 +314,11 @@ export class AdminApp extends LitElement {
           /><br />
           <button @click=${this._onActualizeazaTasteRapide}>
             Actualizeaza
+          </button>
+          <button @click=${this._onResetareTasteRapide}
+          class="resetareTasteRapide"
+          >
+            Resetare
           </button>
         </fieldset>
         <fieldset>
@@ -670,6 +680,29 @@ export class AdminApp extends LitElement {
       ).then((data) => {
         alert(data.mesaj);
         this._actualizareValoriCampuriTasteRapide();
+      });
+    }
+  }
+
+  _onResetareTasteRapide(event) {
+    event.preventDefault();
+
+    if (
+      confirm("Toate valorile implicite vor fi sterse! Doriti sa continuati?")
+    ) {
+      deleteData("http://localhost:8080/tastaRapida/all/", {}).then((data) => {
+        for (var index = 1; index <= 15; index++) {
+          const tastaRapidaRequestDTO = {
+            denumire: "Denumire tasta " + index,
+            codExtern: null,
+            numar: index,
+          };
+
+          postData(
+            "http://localhost:8080/tastaRapida/",
+            tastaRapidaRequestDTO
+          ).then((data) => {});
+        }
       });
     }
   }
